@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 
-HOST=$1; shift
-USER=$(git config github.user)
+IDENTITY=$(git config ssh.identity)
 
-if [ $HOST == 'git@github.com' ]; then
-  if [ ! -e $USER ]; then
-    HOST="github-${USER}"
-  fi
+if [ ! -e ${IDENTITY} ]; then
+  ssh -i ${IDENTITY} $@
+else
+  ssh $@
 fi
-
-ssh ${HOST} $@ >&2
